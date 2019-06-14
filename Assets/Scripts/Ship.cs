@@ -13,9 +13,14 @@ public class Ship : MonoBehaviour
     [SerializeField] private int _player = 0;
     [SerializeField] private Sprite[] _images;
     [SerializeField] private Sprite _explosion;
+    [SerializeField] private Sprite _attack;
+    [SerializeField] private Sprite _defend;
+    [SerializeField] private Sprite _repair;
+    [SerializeField] private SpriteRenderer _actionSprite;
     private Animator _anim;
     private TextMesh _shipIntegrityTextBox;
     private TextMesh _firePowerTextBox;
+
 
     //properties
     public int player
@@ -89,7 +94,10 @@ public class Ship : MonoBehaviour
     void Start()
     {
         _anim = GetComponent<Animator>();
-        
+        foreach (SpriteRenderer s in this.GetComponentsInChildren<SpriteRenderer>()) {
+            if (s.name == "actionSprite") _actionSprite = s;
+        }
+
         foreach (TextMesh t in this.GetComponentsInChildren<TextMesh>()) {
             if (t.name == "shipIntegrityText") _shipIntegrityTextBox = t;
             if (t.name == "shipFirePowerText") _firePowerTextBox = t;
@@ -101,5 +109,16 @@ public class Ship : MonoBehaviour
     {
         _shipIntegrityTextBox.text = this.integrity.ToString();
         _firePowerTextBox.text = this.firePower.ToString();
+        if (_action == "Attack") {
+            _actionSprite.sprite = _attack;
+        }else if(_action == "Defend") {
+            _actionSprite.sprite = _defend;
+        }
+        else if (_action == "Repair") {
+            _actionSprite.sprite = _repair;
+        }
+        else {
+            _actionSprite.sprite = null;
+        }
     }
 }
